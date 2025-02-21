@@ -6,8 +6,7 @@ license = {file = "LICENSE"}
 dependencies = ["aiohttp", "pyzipper", "websockets", "portalocker", "tomlkit"]
 
 [project.urls]
-Repository = "https://github.com/RiceRound/ComfyUI_RiceRound"
-#  Used by Comfy Registry https://comfyregistry.org
+Repository = "https://github.com/RiceRound/ComfyUI_RiceRound_Cloud"
 
 [tool.comfy]
 PublisherId = "riceround"
