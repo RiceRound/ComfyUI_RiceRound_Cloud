@@ -1,7 +1,7 @@
 [project]
-name = "comfyui_riceround_cloud"
+name = "riceround_cloud"
 description = "A tool for generating encrypted workflows and commercializing AI nodes for ComfyUI."
-version = "1.1.0"
+version = "1.1.1"
 license = {file = "LICENSE"}
 dependencies = ["aiohttp", "pyzipper", "websockets", "portalocker", "tomlkit"]
 
