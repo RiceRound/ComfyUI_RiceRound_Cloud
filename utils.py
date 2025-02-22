@@ -10,6 +10,8 @@ import uuid
 import torch
 import numpy as np
 from PIL import Image
+import platform
+import subprocess
 
 
 def pil2tensor(images):
@@ -30,7 +32,43 @@ def pil2tensor(images):
 
 def calculate_machine_id():
     "\n    获取跨平台的机器唯一标识符，类似于 gopsutil 的 HostID\n"
-    return str(uuid.uuid4())
+    system = platform.system()
+    if system == "Linux":
+        try:
+            with open("/etc/machine-id", "r") as f:
+                return f.read().strip()
+        except FileNotFoundError:
+            try:
+                with open("/var/lib/dbus/machine-id", "r") as f:
+                    return f.read().strip()
+            except FileNotFoundError:
+                pass
+        try:
+            output = subprocess.check_output(["cat", "/sys/class/dmi/id/product_uuid"])
+            return output.decode().strip()
+        except Exception:
+            pass
+    elif system == "Windows":
+        try:
+            import winreg
+
+            reg_key = "SOFTWARE\\Microsoft\\Cryptography"
+            with winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, reg_key) as key:
+                machine_guid, _ = winreg.QueryValueEx(key, "MachineGuid")
+                return machine_guid
+        except Exception:
+            pass
+    elif system == "Darwin":
+        try:
+            output = subprocess.check_output(
+                ["ioreg", "-rd1", "-c", "IOPlatformExpertDevice"]
+            )
+            for line in output.decode().splitlines():
+                if "IOPlatformUUID" in line:
+                    return line.split("=")[-1].strip().strip('"')
+        except Exception:
+            pass
+    return str(uuid.getnode())
 
 
 def normalize_machine_id(machine_id):

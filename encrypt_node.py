@@ -136,21 +136,6 @@ class RiceRoundEncryptNode:
                     preview_path,
                     os.path.join(publish_folder, f"{template_id}.bin"),
                 )
-        if RicePromptInfo().get_run_client():
-            try:
-                from .rice_install_client import RiceInstallClient
-
-                error_code, error_msg = RiceInstallClient().run_client()
-                if error_code != RiceRoundErrorDef.SUCCESS:
-                    PromptServer.instance.send_sync(
-                        "riceround_toast",
-                        {"content": "加密节点发布完成，但无法启动client，建议官网重新安装", "type": "error"},
-                    )
-            except Exception as e:
-                PromptServer.instance.send_sync(
-                    "riceround_toast",
-                    {"content": "加密节点发布完成，但无法启动client，建议手动启动", "type": "error"},
-                )
         return {"ui": {"images": results}}
 
 

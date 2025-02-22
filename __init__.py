@@ -73,7 +73,7 @@ NODE_DISPLAY_NAME_MAPPINGS = {
     "RiceRoundAdvancedChoiceNode": "Advanced Choice",
     "RiceRoundImageBridgeNode": "Image Bridge",
     "RiceRoundSimpleImageNode": "Simple Image",
-    "RiceRoundImageNode": "Image",
+    "RiceRoundImageNode": "Image & Mask",
     "RiceRoundDownloadImageAndMaskNode": "Download Image&Mask",
     "RiceRoundDownloadImageNode": "Download Image",
     "RiceRoundRandomSeedNode": "Random Seed",
@@ -150,7 +150,13 @@ async def open_selector_list_folder(request):
     choice_server_folder = RicePromptInfo().get_choice_server_folder()
     if not choice_server_folder.exists():
         return web.json_response({"error": "Folder does not exist"}, status=404)
-    return web.json_response({"status": "success"}, status=200)
+    system = platform.system()
+    try:
+        if system == "Windows":
+            os.startfile(choice_server_folder)
+        return web.json_response({"status": "success"}, status=200)
+    except Exception as e:
+        return web.json_response({"error": str(e)}, status=500)
 
 
 @routes.get("/riceround/get_current_env_config")
@@ -249,11 +255,3 @@ async def check_login_status(request, handler):
 
 if is_on_riceround == True:
     PromptServer.instance.app.middlewares.append(check_login_status)
-if not is_on_riceround:
-    try:
-        from .rice_install_client import RiceInstallClient
-
-        if RicePromptInfo().get_run_client():
-            RiceInstallClient().run_client()
-    except Exception as e:
-        print(f"Error running client")
