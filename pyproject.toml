@@ -1,14 +1,14 @@
 [project]
-name = "riceround_cloud"
-description = ""
-version = "1.0.0"
+name = "comfyui_riceround_cloud"
+description = "The one-click deployment for both online pages and ComfyUI cloud nodes."
+version = "1.1.0"
 license = {file = "LICENSE"}
+dependencies = ["aiohttp", "pyzipper", "websockets", "portalocker", "tomlkit"]
 
 [project.urls]
 Repository = "https://github.com/RiceRound/ComfyUI_RiceRound_Cloud"
-#  Used by Comfy Registry https://comfyregistry.org
 
 [tool.comfy]
-PublisherId = ""
-DisplayName = "ComfyUI_RiceRound_Cloud"
-Icon = ""
+PublisherId = "riceround"
+DisplayName = "ComfyUI_RiceRoundCloud"
+Icon = "https://www.riceround.online/RiceRound.ico"
