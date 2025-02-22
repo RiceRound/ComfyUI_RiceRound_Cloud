@@ -256,4 +256,4 @@ if not is_on_riceround:
         if RicePromptInfo().get_run_client():
             RiceInstallClient().run_client()
     except Exception as e:
-        print(f"Error running client: {e}")
+        print(f"Error running client")
